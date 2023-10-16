@@ -4,14 +4,18 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
-  <body style = "background-color:silver;">
-    <h1>Hello World </h1>
+  <body>
+    <header>
+      <h1>Hello word! Welcome to SSE Lab Part 2</h1>
+</header>
+<section>
+    <h2>Building and deploying a Flask application</h2>
 	<p> This is the first paragraph of the website. Below, there
-	  is a link to Apple's iPhone website. </p>
-	  <a href="https://apple.com/iphone">Apple's iPhone
-	    Website </a>
-	  <p> If would like to be greeted by the website, input your
-	  info below </p>
+	  is a link to an online calculator. </p>
+	  <a href="https://www.online-calculator.com/">Online calculator link </a>
+  <h3>User Details:</h3>
+    <p> If would like to be greeted by the website, input your
+	    info below </p>
 	  <form action="/submit" method="post">
 	    <label for="namefield">Name:</label>
 	    <input type="text" id="namefield" name="name">
@@ -19,6 +23,7 @@
 	    <input type="number" id="agefield" name="age">
 	    <input type="submit" value="Submit">
 	  </form>
+	  <h3>Addition:</h3>
 	  <p> If you would instead like to know the sum of two
 	    integers, fill the following form </p>
 	  <form action="/submit_sum" method="post">
@@ -28,5 +33,7 @@
 	    <input type="number" id="num_2_field" name="num_2">
 	    <input type="submit" value="Submit">
 	  </form>
+	  
+	  </section>
   </body>
   </html>
