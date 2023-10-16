@@ -1,0 +1,70 @@
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+}
+
+header, footer {
+    background-color: #7f8c8d;
+    color: white;
+    text-align: center;
+    padding: 1em;
+}
+
+section {
+    margin: 2em;
+    padding: 2em;
+    background-color: white;
+}
+
+img {
+    width: 500px;
+    height: 333px;
+    display: block;
+    margin: 0 auto;
+}
+
+a {
+    display: block;
+    color: #7f8c8d;
+    text-align: left;
+    margin: 1em 0;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Footer styles */
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Form styles */
+form {
+    margin-top: 2em;
+}
+
+form label, form input {
+    margin-right: 1em;
+}
+
+input[type="submit"] {
+    background-color: #7f8c8d;
+    color: white;
+    padding: 0.5em 1em;
+    border: none;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #626f70;
+}

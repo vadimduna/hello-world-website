@@ -1,14 +1,17 @@
 <html>
   <head>
-  </head>
+    <title>Hello {{ name }}!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
   <body style = "background-color:silver;">
-    <h1>Hello World <h1>
+    <h1>Hello World </h1>
 	<p> This is the first paragraph of the website. Below, there
-	  is a link to Apple's iPhone website. <p>
+	  is a link to Apple's iPhone website. </p>
 	  <a href="https://apple.com/iphone">Apple's iPhone
 	    Website </a>
 	  <p> If would like to be greeted by the website, input your
-	  info below <p>
+	  info below </p>
 	  <form action="/submit" method="post">
 	    <label for="namefield">Name:</label>
 	    <input type="text" id="namefield" name="name">
@@ -17,7 +20,7 @@
 	    <input type="submit" value="Submit">
 	  </form>
 	  <p> If you would instead like to know the sum of two
-	    integers, fill the following form <p>
+	    integers, fill the following form </p>
 	  <form action="/submit_sum" method="post">
 	    <label for="num_1_field">Number 1:</label>
 	    <input type="number" id="num_1_field" name="num_1">
