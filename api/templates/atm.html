@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <title>ATM Money Withdrawal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+
+  <body>
+    <header>
+      <h1>Hello word! Welcome to SSE Lab Part 2</h1>
+    </header>
+
+    <section>
+      <h2>ATM Money Withdrawal</h2>
+      <p>How much money would you like from the ATM?</p>
+      <form action="/atm/money" method="post">
+        <label for="dollarAmount">Enter Dollar Amount (1-50): $</label>
+        <input type="text" name="dollarAmount" required>
+        <input type="submit" value="Withdraw">
+      </form>
+
+      <a href="/">Go back to home</a>
+    </section>
+  </body>
+</html>

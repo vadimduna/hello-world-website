@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Error - ATM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <header>
+        <h1>Something went wrong!</h1>
+    </header>
+
+    <section>
+        <h2>You entered: {{ dollars }}</h2>
+        <p><a href="/atm">Go back to enter the correct amount</a></p>
+    </section>
+
+</body>
+
+</html>
