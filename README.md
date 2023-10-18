@@ -1,4 +1,5 @@
-hello-world-website/
+```bash
+.
 │
 ├── api/                         
 │   ├── app.py          
@@ -19,3 +20,4 @@ hello-world-website/
 ├── requirements.txt       # Python package dependencies
 │
 └── vercel.json            # Configuration for Vercel deployment
+```
