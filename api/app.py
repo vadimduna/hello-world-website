@@ -18,7 +18,7 @@ def submit_sum():
     input_num_2 = request.form.get("num_2")
     return render_template("sum.html", num1=input_num_1, num2=input_num_2)
 
-@app.route("/atm", methods=["GET", "POST"])
+@app.route("/atm", methods=["GET"])
 def atm():
     return render_template("atm.html")
 
