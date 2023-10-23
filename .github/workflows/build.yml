@@ -1,0 +1,24 @@
+name: Python CI
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        container:
+          image: python:3.10
+        
+        steps:
+          - name: Checkout code
+            uses: actions/checkout@v3
+          - name: Install dependecies
+            run: pip install -r requirements.txt
+            
+          - name: Check and format the code with flake8
+            run: flake8 api/*.py
+
+          - name: Check ordering of imports
+            run: isort --check --diff api/*.py
