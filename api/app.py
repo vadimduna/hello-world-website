@@ -35,3 +35,18 @@ def withdraw_money():
         return render_template("money.html", dollars=dollar_amount)
     else:
         return render_template("errors.html", dollars=dollar_amount)
+
+
+def process_query(query_string):
+    if query_string == "dinosaurs":
+        return "Dinosaurs ruled the Earth 200 million years ago"
+    elif query_string == "asteroids":
+        return "Unknown"
+    else:
+        return "Invalid query"
+
+
+@app.route("/query", methods=["GET"])
+def get_query():
+    query_value = request.args.get("q")
+    return process_query(query_value)
