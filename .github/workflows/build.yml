@@ -18,7 +18,6 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
       
-      # Adding black auto-formatting
       - name: Auto-format code with black
         run: black api/*.py
 
@@ -27,6 +26,22 @@ jobs:
 
       - name: Check ordering of imports
         run: isort --check --diff api/*.py
+
+  pyupgrade-check:
+    needs: python-formatting-and-isort
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install pyupgrade
+        run: pip install pyupgrade
+
+      - name: Check with pyupgrade
+        run: pyupgrade --py3-plus api/*.py
 
   html-formatting:
     runs-on: ubuntu-latest
@@ -41,7 +56,8 @@ jobs:
       - name: Validate HTML
         run: python api/validator.py
 
-  unit-test:
+  unit-test: 
+    needs: pyupgrade-check
     runs-on: ubuntu-latest
     container:
       image: python:3.10
@@ -58,7 +74,7 @@ jobs:
   
 
   deploy-to-vercel:
-    needs: [python-formatting-and-isort, html-formatting, unit-test]
+    needs: [html-formatting, unit-test]
     runs-on: ubuntu-latest
 
     steps:
