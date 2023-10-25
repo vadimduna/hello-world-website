@@ -43,19 +43,6 @@ jobs:
       - name: Check with pyupgrade
         run: pyupgrade --py3-plus api/*.py
 
-  html-formatting:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Install html5validator
-        run: pip install html5validator
-
-      - name: Validate HTML
-        run: python api/validator.py
-
   unit-test: 
     needs: pyupgrade-check
     runs-on: ubuntu-latest
@@ -72,6 +59,18 @@ jobs:
       - name: Run unit tests
         run: pytest api/*.py
   
+  html-formatting:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install html5validator
+        run: pip install html5validator
+
+      - name: Validate HTML
+        run: python api/validator.py
 
   deploy-to-vercel:
     needs: [html-formatting, unit-test]
