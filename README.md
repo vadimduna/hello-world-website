@@ -1,13 +1,18 @@
-```
 Link to the website:
-```
+```bash
 https://hello-world-website-gray.vercel.app/
+```
 
 ```bash
 .
 │
+├── .github         
+│   └── workflows
+│       └── build.yml
 ├── api/                         
-│   ├── app.py          
+│   ├── app.py
+│   ├── app_test.py
+│   ├── validator.py          
 │   ├── static/         
 │   │   ├── styles.css
 │   │   └── images/
@@ -25,4 +30,5 @@ https://hello-world-website-gray.vercel.app/
 ├── requirements.txt       # Python package dependencies
 │
 └── vercel.json            # Configuration for Vercel deployment
+
 ```
