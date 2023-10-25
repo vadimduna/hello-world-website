@@ -2,19 +2,21 @@
 <html>
 
 <head>
+    <meta charset="UTF-8"> 
     <title>Hello!</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<style>
-	#atmImage {
-		width: 20em;
-	}
 
-	#atmButton {
-		font-size: 1.5em;
-		padding: 10px 20px;
-	}
-</style>
+    <style>
+        #atmImage {
+            width: 20em;
+        }
+
+        #atmButton {
+            font-size: 1.5em;
+            padding: 10px 20px;
+        }
+    </style>
+</head>
 
 <body>
     <header>
@@ -26,7 +28,7 @@
         <p>
             This is the first paragraph of the website. Below, there is a link to an online addition calculator and a virtual ATM.
         </p>
-		<br><br>
+        <br><br>
         <h3>User Details:</h3>
         <p>If you would like to be greeted by the website, input your info below:</p>
         <form action="/submit" method="post">
@@ -36,7 +38,7 @@
             <input type="number" id="agefield" name="age">
             <input type="submit" value="Submit">
         </form>
-		<br><br>
+        <br><br>
         <h3>Simple Addition:</h3>
         <p>If you would instead like to know the sum of two integers, fill the following form:</p>
         <form action="/submit_sum" method="post">
@@ -46,12 +48,10 @@
             <input type="number" id="num_2_field" name="num_2">
             <input type="submit" value="Submit">
         </form>
-		<br><br><br>
+        <br><br><br>
         <h1>New Feature - ATM:</h1>
-		<a href="{{ url_for('atm') }}">
-            <button id="atmButton">Go to ATM</button>
-        </a>
-		<img id="atmImage" src="{{ url_for('static', filename='images/ATM.jpeg') }}" alt="ATM">
+        <a href="{{ url_for('atm') }}" id="atmButton" class="btn">Go to ATM</a>
+        <img id="atmImage" src="{{ url_for('static', filename='images/ATM.jpeg') }}" alt="ATM">
     </section>
 </body>
 

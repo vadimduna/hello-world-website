@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  python-formatting:
+  python-formatting-and-isort:
     runs-on: ubuntu-latest
     container:
       image: python:3.10
@@ -17,18 +17,50 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
+      
+      # Adding black auto-formatting
+      - name: Auto-format code with black
+        run: black api/*.py
 
       - name: Check and format the code with flake8
         run: flake8 api/*.py
 
       - name: Check ordering of imports
         run: isort --check --diff api/*.py
-        
+
+  html-formatting:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install html5validator
+        run: pip install html5validator
+
+      - name: Validate HTML
+        run: |
+          html5validator --root api/templates | grep -v "Illegal character in path segment: \"{\" is not allowed"
+ 
+
+  unit-test:
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.10
+
+    steps:
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+ 
       - name: Run unit tests
         run: pytest api/*.py
+  
 
   deploy-to-vercel:
-    needs: python-formatting
+    needs: [python-formatting-and-isort, html-formatting, unit-test]
     runs-on: ubuntu-latest
 
     steps:

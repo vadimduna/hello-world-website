@@ -19,13 +19,6 @@ section {
     background-color: white;
 }
 
-img {
-    width: 500px;
-    height: 333px;
-    display: block;
-    margin: 0 auto;
-}
-
 a {
     display: block;
     color: #7f8c8d;
@@ -38,12 +31,11 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Footer styles */
-footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
+img {
+    width: 500px;
+    height: 333px;
+    display: block;
+    margin: 0 auto;
 }
 
 /* Form styles */
@@ -67,4 +59,12 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
     background-color: #626f70;
+}
+
+/* Footer styles */
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
 }

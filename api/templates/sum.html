@@ -1,16 +1,21 @@
+<!DOCTYPE html>
 <html>
-  <head>
+
+<head>
+    <meta charset="UTF-8"> 
     <title>Hello {{ name }}!</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-  </head>
-  <body>
+</head>
+
+<body>
     <header>
-<h1>Calculator</h1>
+        <h1>Calculator</h1>
     </header>
     <section>
-  <h1>Sum Calculator</h1>
-  <p>The sum of {{ num1 }} and {{ num2}} is </p>
-  <p> {{ num1|int + num2|int }} </p>
-  </section>
+        <h1>Sum Calculator</h1>
+        <p>The sum of {{ num1 }} and {{ num2 }} is </p>
+        <p>{{ num1|int + num2|int }}</p>
+    </section>
 </body>
-  </html>
+
+</html>
