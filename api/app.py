@@ -114,21 +114,22 @@ def process_cube_square(query_string):
 
     return str(answer_final[0])
 
-def process_prime(query_string):
-    numbers_string=query_string.split(':')
-    numbers_list=numbers_string[-1].split(' ')
-    numbers_list=[number[:-1] for number in numbers_list][1:]
-    numbers_list=[int(numb) for numb in numbers_list]
 
-    answer_non_prime=[]
+def process_prime(query_string):
+    numbers_string = query_string.split(":")
+    numbers_list = numbers_string[-1].split(" ")
+    numbers_list = [number[:-1] for number in numbers_list][1:]
+    numbers_list = [int(numb) for numb in numbers_list]
+
+    answer_non_prime = []
 
     for num in numbers_list:
         for i in range(2, num):
-            if num%i==0:
+            if num % i == 0:
                 answer_non_prime.append(num)
                 break
 
-    list=[num_prime for num_prime in numbers_list if num_prime not in answer_non_prime]
+    list = [num for num in numbers_list if num not in answer_non_prime]
     return str(list[0])
 
 
