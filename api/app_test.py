@@ -51,3 +51,10 @@ def test_cube_square_one():
     string_2 = "1331, 1370, 1770, 2852, 2601, 1, 1273?"
     string = string_1 + string_2
     assert process_query(string) == "1"
+
+
+def test_prime():
+    string_1 = "Which of the following numbers are primes: "
+    string_2 = "76, 59, 81, 10, 52?"
+    string = string_1 + string_2
+    assert process_query(string) == "59"
