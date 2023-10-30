@@ -39,3 +39,10 @@ def test_cube_square():
     string_2 = "1331, 1370, 1770, 2852, 2601, 4096, 1273?"
     string = string_1 + string_2
     assert process_query(string) == "4096"
+
+
+def test_cube_square_one():
+    string_1 = "Which of the following numbers is both a square and a cube: "
+    string_2 = "1331, 1370, 1770, 2852, 2601, 1, 1273?"
+    string = string_1 + string_2
+    assert process_query(string) == "1"

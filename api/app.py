@@ -86,6 +86,9 @@ def process_cube_square(query_string):
     numbers_list = [number[:-1] for number in numbers_list][1:]
     numbers_list = [int(numb) for numb in numbers_list]
 
+    if 1 in numbers_list:
+        return str("1")
+
     answer_cubed = []
 
     for num in numbers_list:
