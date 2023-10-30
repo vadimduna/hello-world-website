@@ -42,6 +42,8 @@ def process_query(query_string):
         return "Dinosaurs ruled the Earth 200 million years ago"
     elif query_string == "asteroids":
         return "Unknown"
+    elif "name" in query_string:
+        return "Vadim_Mariia_Kevin"
     else:
         return "Invalid query"
 
