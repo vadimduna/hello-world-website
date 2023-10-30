@@ -29,6 +29,11 @@ def test_sum():
     assert process_query(string) == "103"
 
 
+def test_minus():
+    string = "What is 80 minus 90?"
+    assert process_query(string) == "-10"
+
+
 def test_returns_smallest_number():
     string = "Which of the following numbers is the smallest: 25, 9, 26?"
     assert process_query(string) == "9"
