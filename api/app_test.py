@@ -12,5 +12,10 @@ def test_does_not_know_about_asteroids():
     assert process_query("asteroids") == "Unknown"
 
 
-def test_does_not_know_about_names():
+def test_does_know_about_names():
     assert process_query("What is your name?") == "Vadim_Mariia_Kevin_"
+
+
+def test_returns_largest_number():
+    string = "Which of the following numbers is the largest: 25, 89, 26?"
+    assert process_query(string) == "89"
