@@ -121,16 +121,18 @@ def process_prime(query_string):
     numbers_list = [number[:-1] for number in numbers_list][1:]
     numbers_list = [int(numb) for numb in numbers_list]
 
-    answer_non_prime = []
+    answer_list = []
+    non_prime = []
 
     for num in numbers_list:
         for i in range(2, num):
             if num % i == 0:
-                answer_non_prime.append(num)
+                non_prime.append(num)
                 break
 
-    list = [num for num in numbers_list if num not in answer_non_prime]
-    return str(list[0])
+    answer_list = [n for n in numbers_list if n not in non_prime]
+
+    return str(answer_list)[1:-1]
 
 
 @app.route("/query", methods=["GET"])
