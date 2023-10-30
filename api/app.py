@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 
+
 app = Flask(__name__)
 
 
@@ -52,6 +53,8 @@ def process_query(query_string):
         return process_multiply(query_string)
     elif "plus" in query_string:
         return process_plus(query_string)
+    elif "both a square and a cube" in query_string:
+        return process_cube_square(query_string)
     else:
         return "Invalid query"
 
@@ -76,6 +79,28 @@ def process_plus(query_string):
     number_1 = int(query_string.split(" ")[-3])
     number_2 = int(query_string.split(" ")[-1][:-1])
     return str(number_1 + number_2)
+
+
+def process_cube_square(query_string):
+    numbers_string = query_string.split(":")
+    numbers_list = numbers_string[-1].split(" ")
+    numbers_list = [number[:-1] for number in numbers_list][1:]
+    numbers_list = [int(numb) for numb in numbers_list]
+
+    answer_cubed = []
+
+    for num in numbers_list:
+        for i in range(num):
+            if i * i * i == num:
+                answer_cubed.append(num)
+
+    answer_final = []
+    for num in answer_cubed:
+        for i in range(num):
+            if i * i == num:
+                answer_final.append(num)
+
+    return str(answer_final[0])
 
 
 @app.route("/query", methods=["GET"])

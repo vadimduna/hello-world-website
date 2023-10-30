@@ -21,7 +21,7 @@ def test_returns_largest_number():
 
 def multiple():
     string = "What is 30 multiplied by 76?"
-    assert process_query(string) == "103"
+    assert process_query(string) == "2280"
 
 
 def test_sum():
@@ -32,3 +32,10 @@ def test_sum():
 def test_returns_smallest_number():
     string = "Which of the following numbers is the smallest: 25, 9, 26?"
     assert process_query(string) == "9"
+
+
+def test_cube_square():
+    string_1 = "Which of the following numbers is both a square and a cube: "
+    string_2 = "1331, 1370, 1770, 2852, 2601, 4096, 1273?"
+    string = string_1 + string_2
+    assert process_query(string) == "4096"
