@@ -58,3 +58,10 @@ def test_prime():
     string_2 = "7, 13, 26, 84, 43?"
     string = string_1 + string_2
     assert process_query(string) == "7, 13, 43"
+
+
+def test_prime2():
+    string_1 = "Which of the following numbers are primes: "
+    string_2 = "13, 26, 84, 1?"
+    string = string_1 + string_2
+    assert process_query(string) == "13"
