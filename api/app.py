@@ -52,6 +52,8 @@ def process_query(query_string):
         return process_multiply(query_string)
     elif "plus" in query_string:
         return process_plus(query_string)
+    elif "minus" in query_string:
+        return process_plus(query_string)
     elif "both a square and a cube" in query_string:
         return process_cube_square(query_string)
     else:
@@ -78,6 +80,12 @@ def process_plus(query_string):
     number_1 = int(query_string.split(" ")[-3])
     number_2 = int(query_string.split(" ")[-1][:-1])
     return str(number_1 + number_2)
+
+
+def process_minus(query_string):
+    number_1 = int(query_string.split(" ")[-3])
+    number_2 = int(query_string.split(" ")[-1][:-1])
+    return str(number_1 - number_2)
 
 
 def process_cube_square(query_string):
