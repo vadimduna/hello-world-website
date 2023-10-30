@@ -43,7 +43,7 @@ def process_query(query_string):
     elif query_string == "asteroids":
         return "Unknown"
     elif "name" in query_string:
-        return "Vadim_Mariia_Kevin"
+        return "Vadim_Mariia_Kevin_"
     else:
         return "Invalid query"
 
