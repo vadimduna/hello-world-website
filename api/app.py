@@ -46,6 +46,8 @@ def process_query(query_string):
         return "Vadim_Mariia_Kevin_"
     elif "largest" in query_string:
         return process_max_number(query_string)
+    elif "smallest" in query_string:
+        return process_min_number(query_string)
     elif "plus" in query_string:
         return process_plus(query_string)
     else:
@@ -54,7 +56,12 @@ def process_query(query_string):
 
 def process_max_number(query_string):
     numbers = query_string.split(" ")[-3:]
-    return max([number[:-1] for number in numbers])
+    return str(max([int(number[:-1]) for number in numbers]))
+
+
+def process_min_number(query_string):
+    numbers = query_string.split(" ")[-3:]
+    return str(min([int(number[:-1]) for number in numbers]))
 
 
 def process_plus(query_string):

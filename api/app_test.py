@@ -22,3 +22,8 @@ def test_returns_largest_number():
 def test_sum():
     string = "What is 37 plus 66?"
     assert process_query(string) == "103"
+
+
+def test_returns_smallest_number():
+    string = "Which of the following numbers is the smallest: 25, 9, 26?"
+    assert process_query(string) == "9"
