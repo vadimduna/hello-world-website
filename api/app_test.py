@@ -19,6 +19,11 @@ def test_returns_largest_number():
     assert process_query(string) == "89"
 
 
+def multiple():
+    string = "What is 30 multiplied by 76?"
+    assert process_query(string) == "103"
+
+
 def test_sum():
     string = "What is 37 plus 66?"
     assert process_query(string) == "103"

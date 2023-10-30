@@ -48,6 +48,8 @@ def process_query(query_string):
         return process_max_number(query_string)
     elif "smallest" in query_string:
         return process_min_number(query_string)
+    elif "multiplied" in query_string:
+        return process_multiply(query_string)
     elif "plus" in query_string:
         return process_plus(query_string)
     else:
@@ -62,6 +64,12 @@ def process_max_number(query_string):
 def process_min_number(query_string):
     numbers = query_string.split(" ")[-3:]
     return str(min([int(number[:-1]) for number in numbers]))
+
+
+def process_multiply(query_string):
+    number_1 = int(query_string.split(" ")[-4])
+    number_2 = int(query_string.split(" ")[-1][:-1])
+    return str(number_1 * number_2)
 
 
 def process_plus(query_string):
