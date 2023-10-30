@@ -112,7 +112,7 @@ def process_cube_square(query_string):
             if i * i == num:
                 answer_final.append(num)
 
-    return str(answer_final[0])
+    return str(answer_final)[1:-1]
 
 
 def process_prime(query_string):
@@ -130,7 +130,7 @@ def process_prime(query_string):
                 non_prime.append(num)
                 break
 
-    answer_list = [n for n in numbers_list if n not in non_prime and n!=1]
+    answer_list = [n for n in numbers_list if n not in non_prime and n != 1]
 
     return str(answer_list)[1:-1]
 

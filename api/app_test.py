@@ -41,9 +41,9 @@ def test_returns_smallest_number():
 
 def test_cube_square():
     string_1 = "Which of the following numbers is both a square and a cube: "
-    string_2 = "1331, 1370, 1770, 2852, 2601, 4096, 1273?"
+    string_2 = "1934, 3115, 3915, 64, 2725, 2601, 4096?"
     string = string_1 + string_2
-    assert process_query(string) == "4096"
+    assert process_query(string) == "64, 4096"
 
 
 def test_cube_square_one():
