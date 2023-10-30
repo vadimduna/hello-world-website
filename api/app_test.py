@@ -3,9 +3,7 @@ from app import process_query
 
 def test_knows_about_dinosaurs():
     string = "Dinosaurs ruled the Earth 200 million years ago"
-    assert (
-        process_query("dinosaurs") == string
-    )
+    assert process_query("dinosaurs") == string
 
 
 def test_does_not_know_about_asteroids():
@@ -19,3 +17,8 @@ def test_does_know_about_names():
 def test_returns_largest_number():
     string = "Which of the following numbers is the largest: 25, 89, 26?"
     assert process_query(string) == "89"
+
+
+def test_sum():
+    string = "What is 37 plus 66?"
+    assert process_query(string) == "103"

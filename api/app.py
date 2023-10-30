@@ -45,14 +45,22 @@ def process_query(query_string):
     elif "name" in query_string:
         return "Vadim_Mariia_Kevin_"
     elif "largest" in query_string:
-        return process_number(query_string)
+        return process_max_number(query_string)
+    elif "plus" in query_string:
+        return process_plus(query_string)
     else:
         return "Invalid query"
 
 
-def process_number(query_string):
-    numbers = query_string.split(' ')[-3:]
+def process_max_number(query_string):
+    numbers = query_string.split(" ")[-3:]
     return max([number[:-1] for number in numbers])
+
+
+def process_plus(query_string):
+    number_1 = int(query_string.split(" ")[-3])
+    number_2 = int(query_string.split(" ")[-1][:-1])
+    return str(number_1 + number_2)
 
 
 @app.route("/query", methods=["GET"])
