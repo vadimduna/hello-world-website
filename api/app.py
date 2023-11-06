@@ -4,7 +4,6 @@ from typing import List
 import requests
 from flask import Flask, render_template, request
 from pydantic import BaseModel
-
 from utils_request import process_query
 
 app = Flask(__name__)
