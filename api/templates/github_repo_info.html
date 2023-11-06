@@ -18,14 +18,20 @@
             <thead>
                 <tr>
                     <th>Repository Name</th>
-                    <th>Date Created</th>
+                    <th>Date and Time Created</th>
+                    <th>Date and Time of Last Commit</th>
+                    <th>Number of Commits</th>
+                    <th>Last Commit Message</th>
                 </tr>
             </thead>
             <tbody>
-                {% for my_repo_object in my_repo_objects %}
+                {% for repo_object in repo_objects %}
                     <tr>
-                        <td>{{ my_repo_object.repository_name }}</td>
-                        <td>{{ my_repo_object.time }}</td>
+                        <td>{{ repo_object.repository_name }}</td>
+                        <td>{{ repo_object.time_created }}</td>
+                        <td>{{ repo_object.time_last_commit }}</td>
+                        <td>{{ repo_object.commits_num }}</td>
+                        <td>{{ repo_object.last_commit_message }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

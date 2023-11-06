@@ -54,13 +54,16 @@ def process_github_username():
     username = request.form.get("username")
     repo_objects = format_response(username)
     return render_template(
-        "github_repo_info.html", name=username, my_repo_objects=repo_objects
+        "github_repo_info.html", name=username, repo_objects=repo_objects
     )
 
 
 class Repository(BaseModel):
     repository_name: str
-    time: datetime
+    time_created: datetime
+    last_commit_message: str
+    time_last_commit: datetime
+    commits_num: int
 
 
 def format_response(username: str) -> List[Repository]:
@@ -72,21 +75,46 @@ def format_response(username: str) -> List[Repository]:
         repo_objects = []
         for repo in repos:
             repo_name = repo["full_name"].split("/")[-1]
-            created_time = datetime_return(repo)
-            repo_objects.append(
-                Repository(repository_name=repo_name, time=created_time)
-            )
+            time_created = datetime_return(repo, "created_at")
 
+            time_last_commit = datetime_return(repo, "pushed_at")
+            last_commit_message, commits_num = process_commits(repo)
+            repo_objects.append(
+                Repository(
+                    repository_name=repo_name,
+                    time_created=time_created,
+                    time_last_commit=time_last_commit,
+                    last_commit_message=last_commit_message,
+                    commits_num=commits_num,
+                )
+            )
     return repo_objects
 
 
-def datetime_return(repo):
-    timestamp_str = repo["created_at"]
-    timestamp_str = timestamp_str.replace(
-        "Z", "+00:00"
-    )  # Replace 'Z' with '+00:00' to specify UTC offset
+def process_commits(repo):
+    commits_url = repo["commits_url"].split("{")[0]
+    response_commits = requests.get(commits_url)
+    last_commit_message = "No commits found"  # Default message
+    commits_num = 0  # Default number of commits
 
-    return datetime.fromisoformat(timestamp_str)
+    if response_commits.status_code == 200:
+        commits = response_commits.json()
+        if commits:  # Check if the commits list is not empty
+            commits_num = len(commits)
+            last_commit_message = commits[0]["commit"]["message"]
+
+    return last_commit_message, commits_num
+
+
+def datetime_return(repo, key):
+    timestamp_str = repo[key]
+    utc_time = datetime.fromisoformat(timestamp_str.replace("Z", "+00:00"))
+    # Convert the timezone-aware datetime object to local time
+    local_time = utc_time.astimezone(tz=None)
+    # If tz=None, it uses the local timezone
+    local_time_str = local_time.strftime("%Y-%m-%d %H:%M:%S")
+
+    return local_time_str
 
 
 @app.route("/query", methods=["GET"])
