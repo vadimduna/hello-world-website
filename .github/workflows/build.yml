@@ -9,7 +9,7 @@ jobs:
   python-formatting-and-isort:
     runs-on: ubuntu-latest
     container:
-      image: python:3.10
+      image: python:3.11.5
 
     steps:
       - name: Checkout code
@@ -24,11 +24,14 @@ jobs:
       - name: Check and format the code with flake8
         run: flake8 api/*.py
 
+      - name: Check ordering of imports
+        run: isort --check --diff api/*.py
+
   pyupgrade-check:
     needs: python-formatting-and-isort
     runs-on: ubuntu-latest
     container:
-      image: python:3.10
+      image: python:3.11.5
 
     steps:
       - name: Checkout code
