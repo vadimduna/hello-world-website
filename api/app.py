@@ -1,3 +1,4 @@
+import requests
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -27,17 +28,6 @@ def atm():
     return render_template("atm.html")
 
 
-@app.route("/github_form")
-def github_form():
-    return render_template("github_form.html")
-
-
-@app.route("/process_github_username", methods=["POST"])
-def process_github_username():
-    username = request.form["username"]
-    return f"Hello {username}"
-
-
 @app.route("/atm/money", methods=["POST"])
 def withdraw_money():
     dollar_amount = int(request.form.get("dollarAmount", 0))
@@ -46,6 +36,33 @@ def withdraw_money():
         return render_template("money.html", dollars=dollar_amount)
     else:
         return render_template("errors.html", dollars=dollar_amount)
+
+
+@app.route("/github_form")
+def github_form():
+    return render_template("github_form.html")
+
+
+@app.route("/process_github_username", methods=["POST"])
+def process_github_username():
+    username = request.form.get("username")
+    repo_names_str=format_response(username)
+    return render_template("github_repo_info.html", name = username, repo_names=repo_names_str)
+
+
+def format_response(username):
+    url = f"https://api.github.com/users/{username}/repos"
+    response = requests.get(url)
+                            
+    if response.status_code == 200:
+        repos = response.json() # data returned is a list of ‘repository’ entities
+        repo_names=''
+        for repo in repos:
+            repo_names+=str((repo["full_name"]))
+            repo_names+=', '
+
+    return repo_names[:-2]
+        
 
 
 def process_query(query_string):
