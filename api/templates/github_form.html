@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>GitHub Username Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+
+<body>
+    <section>
+    <form action="/process_github_username" method="post">
+        <label for="usernamefield">GitHub Username:</label>
+        <input type="text" id="usernamefield" name="username" required>
+        <input type="submit" value="Submit">
+    </form>
+    </section>
+</body>
+
+</html>

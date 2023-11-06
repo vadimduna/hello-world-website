@@ -27,6 +27,17 @@ def atm():
     return render_template("atm.html")
 
 
+@app.route("/github_form")
+def github_form():
+    return render_template("github_form.html")
+
+
+@app.route("/process_github_username", methods=["POST"])
+def process_github_username():
+    username = request.form["username"]
+    return f"Hello {username}"
+
+
 @app.route("/atm/money", methods=["POST"])
 def withdraw_money():
     dollar_amount = int(request.form.get("dollarAmount", 0))
