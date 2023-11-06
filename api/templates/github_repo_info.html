@@ -9,12 +9,28 @@
 
 <body>
     <header>
-        <h1>Welcome!</h1>
+        <h1>GitHub Repositories</h1>
     </header>
-    <section>
-        <h1>Hello {{ name }} !</h1>
-        <p>Your repositories are: {{ repo_names }} </p>
-    </section>
-</body>
 
+    <section>
+        <h2>Hello {{ name }}!</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Repository Name</th>
+                    <th>Date Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for my_repo_object in my_repo_objects %}
+                    <tr>
+                        <td>{{ my_repo_object.repository_name }}</td>
+                        <td>{{ my_repo_object.time }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+</body>
 </html>

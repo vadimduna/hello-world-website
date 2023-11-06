@@ -1,5 +1,11 @@
+from datetime import datetime
+from typing import List
+
 import requests
 from flask import Flask, render_template, request
+from pydantic import BaseModel
+
+from utils_request import process_query
 
 app = Flask(__name__)
 
@@ -46,121 +52,41 @@ def github_form():
 @app.route("/process_github_username", methods=["POST"])
 def process_github_username():
     username = request.form.get("username")
-    repo_names_str=format_response(username)
-    return render_template("github_repo_info.html", name = username, repo_names=repo_names_str)
+    repo_objects = format_response(username)
+    return render_template(
+        "github_repo_info.html", name=username, my_repo_objects=repo_objects
+    )
 
 
-def format_response(username):
+class Repository(BaseModel):
+    repository_name: str
+    time: datetime
+
+
+def format_response(username: str) -> List[Repository]:
     url = f"https://api.github.com/users/{username}/repos"
     response = requests.get(url)
-                            
+
     if response.status_code == 200:
-        repos = response.json() # data returned is a list of ‘repository’ entities
-        repo_names=''
+        repos = response.json()
+        repo_objects = []
         for repo in repos:
-            repo_names+=str((repo["full_name"]))
-            repo_names+=', '
+            repo_name = repo["full_name"].split("/")[-1]
+            created_time = datetime_return(repo)
+            repo_objects.append(
+                Repository(repository_name=repo_name, time=created_time)
+            )
 
-    return repo_names[:-2]
-        
-
-
-def process_query(query_string):
-    if query_string == "dinosaurs":
-        return "Dinosaurs ruled the Earth 200 million years ago"
-    elif query_string == "asteroids":
-        return "Unknown"
-    elif "name" in query_string:
-        return "Vadim_Mariia_Kevin_"
-    elif "largest" in query_string:
-        return process_max_number(query_string)
-    elif "smallest" in query_string:
-        return process_min_number(query_string)
-    elif "multiplied" in query_string:
-        return process_multiply(query_string)
-    elif "plus" in query_string:
-        return process_plus(query_string)
-    elif "minus" in query_string:
-        return process_minus(query_string)
-    elif "both a square and a cube" in query_string:
-        return process_cube_square(query_string)
-    elif "prime" in query_string:
-        return process_prime(query_string)
-    else:
-        return "Invalid query"
+    return repo_objects
 
 
-def process_max_number(query_string):
-    numbers = query_string.split(" ")[-3:]
-    return str(max([int(number[:-1]) for number in numbers]))
+def datetime_return(repo):
+    timestamp_str = repo["created_at"]
+    timestamp_str = timestamp_str.replace(
+        "Z", "+00:00"
+    )  # Replace 'Z' with '+00:00' to specify UTC offset
 
-
-def process_min_number(query_string):
-    numbers = query_string.split(" ")[-3:]
-    return str(min([int(number[:-1]) for number in numbers]))
-
-
-def process_multiply(query_string):
-    number_1 = int(query_string.split(" ")[-4])
-    number_2 = int(query_string.split(" ")[-1][:-1])
-    return str(number_1 * number_2)
-
-
-def process_plus(query_string):
-    number_1 = int(query_string.split(" ")[-3])
-    number_2 = int(query_string.split(" ")[-1][:-1])
-    return str(number_1 + number_2)
-
-
-def process_minus(query_string):
-    number_1 = int(query_string.split(" ")[-3])
-    number_2 = int(query_string.split(" ")[-1][:-1])
-    return str(number_1 - number_2)
-
-
-def process_cube_square(query_string):
-    numbers_string = query_string.split(":")
-    numbers_list = numbers_string[-1].split(" ")
-    numbers_list = [number[:-1] for number in numbers_list][1:]
-    numbers_list = [int(numb) for numb in numbers_list]
-
-    if 1 in numbers_list:
-        return "1"
-
-    answer_cubed = []
-
-    for num in numbers_list:
-        for i in range(num):
-            if i * i * i == num:
-                answer_cubed.append(num)
-
-    answer_final = []
-    for num in answer_cubed:
-        for i in range(num):
-            if i * i == num:
-                answer_final.append(num)
-
-    return str(answer_final)[1:-1]
-
-
-def process_prime(query_string):
-    numbers_string = query_string.split(":")
-    numbers_list = numbers_string[-1].split(" ")
-    numbers_list = [number[:-1] for number in numbers_list][1:]
-    numbers_list = [int(numb) for numb in numbers_list]
-
-    answer_list = []
-    non_prime = []
-
-    for num in numbers_list:
-        for i in range(2, num):
-            if num % i == 0:
-                non_prime.append(num)
-                break
-
-    answer_list = [n for n in numbers_list if n not in non_prime and n != 1]
-
-    return str(answer_list)[1:-1]
+    return datetime.fromisoformat(timestamp_str)
 
 
 @app.route("/query", methods=["GET"])
