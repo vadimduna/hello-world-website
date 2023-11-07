@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import List
 
 import requests
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from pydantic import BaseModel
 
 app = Flask(__name__)
@@ -42,10 +42,63 @@ def withdraw_money():
         return render_template("errors.html", dollars=dollar_amount)
 
 
-@app.route("/github_form")
+# Function to fetch and transform stock data based on the company ticker symbol
+def fetch_and_transform_stock_data(ticker_symbol):
+    # Construct the URL with the provided ticker symbol
+    url = f"https://api.polygon.io/v2/aggs/ticker/{ticker_symbol}/range/1/day/2023-09-06/2023-11-06?apiKey=ReEp6_WMyeJ9SnT4K9LJAPEtyN91Cs8y"
+    api_response = requests.get(url).json()
+    chart_data = transform_stock_data(api_response)
+    return chart_data
+
+# Route to provide chart_data as JSON for a specific company
+@app.route("/github_form_data/<ticker_symbol>", methods=['GET'])
+def get_chart_data(ticker_symbol):
+    chart_data = fetch_and_transform_stock_data(ticker_symbol)
+    return jsonify(chart_data)
+
+# Route to render the HTML page with a form for inputting the company ticker symbol
+@app.route("/github_form", methods=['GET'])
 def github_form():
     return render_template("github_form.html")
 
+# Route to process the form input and display the stock chart
+@app.route("/generate_chart", methods=['POST'])
+def generate_chart():
+    # Get the user-inputted company ticker symbol from the form
+    ticker_symbol = request.form.get("ticker_symbol")
+    
+    # Fetch and transform stock data for the specified company
+    chart_data = fetch_and_transform_stock_data(ticker_symbol)
+    
+    # Render the HTML template with the chart data
+    return render_template("github_form.html", chart_data=chart_data, ticker_symbol=ticker_symbol)
+
+
+def transform_stock_data(api_response):
+    # Check if the API response contains the 'results' key
+    if 'results' not in api_response:
+        return None
+
+    data = api_response['results']
+
+    labels = []
+    prices = []
+
+    for entry in data:
+        if 't' in entry and 'c' in entry:
+            # Convert timestamp to a date format (you may need to adjust this depending on the timestamp format)
+            date = entry['t'] / 1000  # Assuming the timestamp is in milliseconds, convert to seconds
+            # Append the date and closing price to the respective lists
+            labels.append(date)
+            prices.append(entry['c'])
+
+    # Create a dictionary with the transformed data
+    transformed_data = {
+        "dates": labels,
+        "prices": prices
+    }
+
+    return transformed_data
 
 @app.route("/process_github_username", methods=["POST"])
 def process_github_username():
@@ -54,7 +107,6 @@ def process_github_username():
     return render_template(
         "github_repo_info.html", name=username, repo_objects=repo_objects
     )
-
 
 class Repository(BaseModel):
     repository_name: str
@@ -89,17 +141,23 @@ def format_response(username: str) -> List[Repository]:
     return repo_objects
 
 
+def get_commit_count(commits_url: str) -> int:
+    response = requests.get(f"{commits_url}?per_page=100")
+    if response.status_code == 200:
+        commits = response.json()
+        return min(len(commits), 100)  
+    else:
+        return 0  
+
 def process_commits(repo):
     commits_url = repo["commits_url"].split("{")[0]
-    response_commits = requests.get(commits_url)
     last_commit_message = "No commits found"  # Default message
-    commits_num = 0  # Default number of commits
+    commits_num = get_commit_count(commits_url)  # Get the number of commits
 
-    if response_commits.status_code == 200:
-        commits = response_commits.json()
-        if commits:  # Check if the commits list is not empty
-            commits_num = len(commits)
-            last_commit_message = commits[0]["commit"]["message"]
+    if commits_num > 0:
+        response_commits = requests.get(commits_url)
+        if response_commits.status_code == 200:
+            last_commit_message = response_commits.json()[0]["commit"]["message"]
 
     return last_commit_message, commits_num
 
