@@ -2,22 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>GitHub Username Form</title>
+    <title>GitHub & Stock Prices</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <section>
+    <section id="github-section">
+        <h2>Github Username</h2>
         <form action="/process_github_username" method="post">
             <label for="usernamefield">GitHub Username:</label>
             <input type="text" id="usernamefield" name="username" required>
             <input type="submit" value="Submit">
         </form>
+    </section>
+
+    <section id="stock-prices-section">
+        <h2>Stock Prices</h2>
         <form id="tickerForm">
             <label for="tickerInput">Enter Ticker Symbol:</label>
             <input type="text" id="tickerInput" name="ticker" required>
             <input type="submit" value="Generate Chart">
+            <h3>Possible Company Tickers for Inspiration:</h3>
+            <ul>
+                <li>AAPL (Apple Inc.)</li>
+                <li>GOOGL (Alphabet Inc.)</li>
+                <li>MSFT (Microsoft Corporation)</li>
+                <li>TSLA (Tesla, Inc.)</li>
+                <!-- Add more tickers as needed -->
+            </ul>
         </form>
         <canvas id="stockChart" width="400" height="200"></canvas>
     </section>
@@ -34,13 +47,13 @@
                 stockChart.destroy(); // Destroy the existing chart
             }
         
-            // Manually format the date labels as 'MM/DD/YYYY'
-            const formattedLabels = labels.map((date) => {
-                const parsedDate = new Date(date);
-                const year = parsedDate.getFullYear();
-                const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
-                const day = String(parsedDate.getDate()).padStart(2, '0');
-                return `${month}/${day}/${year}`;
+            // Format the date labels as 'YYYY-MM-DD'
+            const formattedLabels = labels.map((timestamp) => {
+                const date = new Date(timestamp * 1000); // Convert timestamp to milliseconds
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
             });
         
             // Create a chart on the canvas element
