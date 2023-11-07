@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import List
 
 import requests
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, jsonify, render_template, request
 from pydantic import BaseModel
 
 app = Flask(__name__)
@@ -43,64 +43,69 @@ def withdraw_money():
 
 
 # Function to fetch and transform stock data based on the company ticker symbol
-def fetch_and_transform_stock_data(ticker_symbol):
+def fetch_and_transform_stock_data(ticker):
     # Construct the URL with the provided ticker symbol
-    start_date="2023-09-06"
-    end_date="2023-11-06"
-    url = f"https://api.polygon.io/v2/aggs/ticker/{ticker_symbol}/range/1/day/{start_date}/{end_date}?apiKey=ReEp6_WMyeJ9SnT4K9LJAPEtyN91Cs8y"
+    sd = "2023-09-06"
+    ed = "2023-11-06"
+    api_key = {"ReEp6_WMyeJ9SnT4K9LJAPEtyN91Cs8y"}
+    host = "https://api.polygon.io/v2/aggs"
+    url = f"{host}/ticker/{ticker}/range/1/day/{sd}/{ed}?apiKey={api_key}"
     api_response = requests.get(url).json()
     chart_data = transform_stock_data(api_response)
     return chart_data
 
+
 # Route to provide chart_data as JSON for a specific company
-@app.route("/github_form_data/<ticker_symbol>", methods=['GET'])
+@app.route("/github_form_data/<ticker_symbol>", methods=["GET"])
 def get_chart_data(ticker_symbol):
     chart_data = fetch_and_transform_stock_data(ticker_symbol)
     return jsonify(chart_data)
 
-# Route to render the HTML page with a form for inputting the company ticker symbol
-@app.route("/github_form", methods=['GET'])
+
+@app.route("/github_form", methods=["GET"])
 def github_form():
     return render_template("github_form.html")
 
+
 # Route to process the form input and display the stock chart
-@app.route("/generate_chart", methods=['POST'])
+@app.route("/generate_chart", methods=["POST"])
 def generate_chart():
     # Get the user-inputted company ticker symbol from the form
     ticker_symbol = request.form.get("ticker_symbol")
-    
+
     # Fetch and transform stock data for the specified company
     chart_data = fetch_and_transform_stock_data(ticker_symbol)
-    
+
     # Render the HTML template with the chart data
-    return render_template("github_form.html", chart_data=chart_data, ticker_symbol=ticker_symbol)
+    return render_template(
+        "github_form.html", chart_data=chart_data, ticker_symbol=ticker_symbol
+    )
 
 
 def transform_stock_data(api_response):
     # Check if the API response contains the 'results' key
-    if 'results' not in api_response:
+    if "results" not in api_response:
         return None
 
-    data = api_response['results']
+    data = api_response["results"]
 
     labels = []
     prices = []
 
     for entry in data:
-        if 't' in entry and 'c' in entry:
-            # Convert timestamp to a date format (you may need to adjust this depending on the timestamp format)
-            date = entry['t'] / 1000  # Assuming the timestamp is in milliseconds, convert to seconds
+        if "t" in entry and "c" in entry:
+            date = (
+                entry["t"] / 1000
+            )  # Assuming the timestamp is in milliseconds, convert to seconds
             # Append the date and closing price to the respective lists
             labels.append(date)
-            prices.append(entry['c'])
+            prices.append(entry["c"])
 
     # Create a dictionary with the transformed data
-    transformed_data = {
-        "dates": labels,
-        "prices": prices
-    }
+    transformed_data = {"dates": labels, "prices": prices}
 
     return transformed_data
+
 
 @app.route("/process_github_username", methods=["POST"])
 def process_github_username():
@@ -110,12 +115,15 @@ def process_github_username():
         "github_repo_info.html", name=username, repo_objects=repo_objects
     )
 
+
 class Repository(BaseModel):
     repository_name: str
     time_created: datetime
     last_commit_message: str
     time_last_commit: datetime
     commits_num: int
+    commit_hash: str
+    commit_author: str
 
 
 def format_response(username: str) -> List[Repository]:
@@ -130,7 +138,12 @@ def format_response(username: str) -> List[Repository]:
             time_created = datetime_return(repo, "created_at")
 
             time_last_commit = datetime_return(repo, "pushed_at")
-            last_commit_message, commits_num = process_commits(repo)
+            (
+                last_commit_message,
+                commit_hash,
+                commit_author,
+                commits_num,
+            ) = process_commits(repo)
             repo_objects.append(
                 Repository(
                     repository_name=repo_name,
@@ -138,6 +151,8 @@ def format_response(username: str) -> List[Repository]:
                     time_last_commit=time_last_commit,
                     last_commit_message=last_commit_message,
                     commits_num=commits_num,
+                    commit_hash=commit_hash,
+                    commit_author=commit_author,
                 )
             )
     return repo_objects
@@ -147,21 +162,26 @@ def get_commit_count(commits_url: str) -> int:
     response = requests.get(f"{commits_url}?per_page=100")
     if response.status_code == 200:
         commits = response.json()
-        return min(len(commits), 100)  
+        return min(len(commits), 100)
     else:
-        return 0  
+        return 0
+
 
 def process_commits(repo):
     commits_url = repo["commits_url"].split("{")[0]
-    last_commit_message = "No commits found"  # Default message
+    commit_message = "No commits found"  # Default message
     commits_num = get_commit_count(commits_url)  # Get the number of commits
 
     if commits_num > 0:
         response_commits = requests.get(commits_url)
         if response_commits.status_code == 200:
-            last_commit_message = response_commits.json()[0]["commit"]["message"]
+            response_commits_j = response_commits.json()
+            # [0] for the last commit
+            commit_message = response_commits_j[0]["commit"]["message"]
+            commit_hash = response_commits_j[0]["sha"]
+            commit_author = response_commits_j[0]["commit"]["author"]["name"]
 
-    return last_commit_message, commits_num
+    return commit_message, commit_hash, commit_author, commits_num
 
 
 def datetime_return(repo, key):

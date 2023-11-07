@@ -19,9 +19,11 @@
                 <tr>
                     <th>Repository Name</th>
                     <th>Date and Time Created</th>
+                    <th>Number of Commits for Repository(Max 100)</th>
                     <th>Date and Time of Last Commit</th>
-                    <th>Number of Commits (Max 100)</th>
+                    <th>Last Commit Hash</th>
                     <th>Last Commit Message</th>
+                    <th>Last Commit Author</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,9 +31,11 @@
                     <tr>
                         <td>{{ repo_object.repository_name }}</td>
                         <td>{{ repo_object.time_created }}</td>
-                        <td>{{ repo_object.time_last_commit }}</td>
                         <td>{{ repo_object.commits_num }}</td>
+                        <td>{{ repo_object.time_last_commit }}</td>
+                        <td>{{ repo_object.commit_hash }}</td>
                         <td>{{ repo_object.last_commit_message }}</td>
+                        <td>{{ repo_object.commit_author }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
