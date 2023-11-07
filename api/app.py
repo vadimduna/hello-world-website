@@ -45,11 +45,11 @@ def withdraw_money():
 # Function to fetch and transform stock data based on the company ticker symbol
 def fetch_and_transform_stock_data(ticker):
     # Construct the URL with the provided ticker symbol
-    sd = "2023-09-06"
-    ed = "2023-11-06"
-    api_key = {"ReEp6_WMyeJ9SnT4K9LJAPEtyN91Cs8y"}
-    host = "https://api.polygon.io/v2/aggs"
-    url = f"{host}/ticker/{ticker}/range/1/day/{sd}/{ed}?apiKey={api_key}"
+    start_date = "2023-09-06"
+    end_date = "2023-11-06"
+    host = "api.polygon.io/v2/aggs/ticker"
+    api = "apiKey=ReEp6_WMyeJ9SnT4K9LJAPEtyN91Cs8y"
+    url = f"https://{host}/{ticker}/range/1/day/{start_date}/{end_date}?{api}"
     api_response = requests.get(url).json()
     chart_data = transform_stock_data(api_response)
     return chart_data
