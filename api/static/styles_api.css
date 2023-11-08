@@ -1,0 +1,84 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #0b1629; /* Dark blue background similar to Spotify's */
+    color: #ffffff; /* White text color for general readability */
+}
+
+/* Section styles */
+section {
+    margin: 2em;
+    padding: 2em;
+    background-color: #181c2f; /* Slightly lighter blue for sections */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+h1, h2 {
+    color: #1ed760; /* Spotify's brand green for headings */
+    font-family: 'Circular Std', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Link styles */
+a {
+    color: #1db954; /* Spotify green for links */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #1ed760; /* A lighter Spotify green on hover */
+}
+
+/* Form styles */
+form label, form input, form button {
+    display: block;
+    width: 100%;
+}
+
+input[type="text"], button {
+    padding: 0.5em;
+    margin-top: 0.5em;
+    border: none;
+    border-radius: 500px; /* Rounded edges like Spotify buttons */
+}
+
+input[type="text"] {
+    background-color: #fff;
+    color: #191414; /* Spotify dark for text input */
+}
+
+button {
+    background-color: #1db954; /* Spotify green for buttons */
+    color: #ffffff; /* White for button text */
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #1ed760; /* A lighter Spotify green on hover */
+}
+
+/* Chart styles */
+#stockChart {
+    background-color: #181c2f; /* Background for the chart should match section */
+    border: 1px solid #333; /* Add a border to the chart */
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+    section {
+        margin: 1em;
+    }
+
+    h1 {
+        font-size: 1.5em; /* Smaller heading for mobile */
+    }
+}
