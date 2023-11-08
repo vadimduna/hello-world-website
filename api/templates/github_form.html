@@ -8,6 +8,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <header>
+        <h1>GitHub & Stock Prices</h1>
+    </header>
+
     <section id="github-section">
         <h2>Github Username</h2>
         <form action="/process_github_username" method="post">
@@ -21,7 +25,7 @@
         <h2>Stock Prices</h2>
         <form id="tickerForm">
             <label for="tickerInput">Enter Ticker Symbol:</label>
-            <input type="text" id="tickerInput" name="ticker" required>
+            <input type="text" id="tickerInput" name "ticker" required>
             <input type="submit" value="Generate Chart">
             <h3>Possible Company Tickers for Inspiration:</h3>
             <ul>
