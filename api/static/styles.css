@@ -1,7 +1,5 @@
-/* Apple-inspired design */
 
-/* Reset default styles */
-* {
+ *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -23,8 +21,8 @@ header {
 }
 
 header h1 {
-    font-size: 24px; /* Adjust the font size */
-    font-weight: normal; /* Adjust the font weight */
+    font-size: 24px; 
+    font-weight: normal;
     margin: 0;
 }
 
@@ -112,7 +110,6 @@ nav h2 {
     font-weight: thin;
 }
 
-/* Enhance the possible company tickers */
 ul {
     list-style: none;
 }
